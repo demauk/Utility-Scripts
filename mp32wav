@@ -1,0 +1,9 @@
+#!/bin/bash
+# 
+# mp32wav
+# 
+for i in *.mp3; do
+   # out=$(echo $i | sed -e 's/.mp3//g')
+    mplayer -ao pcm "$i" -ao pcm:file="${i%.mp3}.wav"
+done
+

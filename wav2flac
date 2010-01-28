@@ -1,0 +1,6 @@
+#!/bin/bash
+
+for i in *.wav; do
+	echo converting: "$i"
+	nice flac "$i" -o "$(basename "$i" .wav).flac"
+done

@@ -1,0 +1,13 @@
+#!/bin/sh
+for nam in *.ogg; do
+	BASE="`echo $nam | sed s/.ogg$//`"
+	ARTIST="`ogginfo "$nam"|grep -i artist | awk -F = '{print $2}'`"
+	ALBUM="`ogginfo "$nam" |grep -i album | awk -F = '{print $2}'`"
+	TRACK="`ogginfo "$nam" |grep -i tracknumber|awk -F = '{print $2}'`"
+	TITLE="`ogginfo "$nam" |grep -i title | awk -F = '{print $2}'`"
+	ogg123 -q -d wav -f - "$nam" \
+		| lame --quiet --preset cd - "${BASE}.mp3" 
+
+	id3tool --set-artist="${ARTIST}" --set-album="${ALBUM}" \
+		--set-track=$TRACK --set-title="${TITLE}" "${BASE}.mp3"
+done

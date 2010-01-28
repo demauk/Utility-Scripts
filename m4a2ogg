@@ -1,0 +1,5 @@
+#!/bin/bash
+for nam in *.mp4 
+	do nice mplayer -ao pcm "$nam" -ao pcm:file="$nam.wav" && nice oggenc -q5 "$nam.wav" -o "$(basename "$nam" .mp4).ogg" 
+	rm "$nam.wav" 
+done

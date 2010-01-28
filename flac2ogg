@@ -1,0 +1,6 @@
+#!/bin/bash
+
+for i in *.flac; do
+	echo converting: "$i"
+	nice flac -sdc "$i" | nice oggenc -q7 - -o "$(basename "$i" .flac).ogg"
+done

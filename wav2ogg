@@ -1,0 +1,4 @@
+#!/bin/bash
+for nam in *.wav 
+	do nice oggenc -q5 "$nam" -o "$(basename "$nam" .wav).ogg" 
+done

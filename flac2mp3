@@ -1,0 +1,19 @@
+#!/bin/bash
+
+for i in *.flac; do
+	echo "$i"
+	echo Gathering tags ...
+	TITLE="`metaflac --show-tag=title "$i" | awk -F = '{print $2}'`"
+	ARTIST="`metaflac --show-tag=artist "$i" | awk -F = '{print $2}'`"
+	ALBUM="`metaflac --show-tag=album "$i" | awk -F = '{print $2}'`"
+	ALBUM=${ALBUM#http://}
+	YEAR="`metaflac --show-tag=year "$i" | awk -F = '{print $2}'`"
+	TRACK="`metaflac --show-tag=track "$i" |awk -F = '{print $2}'`"
+	GENRE="`metaflac --show-tag=genre "$i" |awk -F = '{print $2}'`"
+
+	echo Converting ...
+	nice flac -sdc "$i" | nice lame --quiet -b 192 \
+		--tt "${TITLE}" --ta "${ARTIST}" --tl "${ALBUM}" \
+		--ty $YEAR --tn $TRACK --tg "${GENRE}" \
+		--id3v2-only --ignore-tag-errors - "$(basename "$i" .flac).mp3"
+done
